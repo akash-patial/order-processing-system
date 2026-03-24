@@ -1,0 +1,52 @@
+services:
+  frontend:
+    build: ./frontend
+    ports: 
+    - 3000:3000
+    environment:
+      - REACT_APP_API_URL=${REACT_APP_API_URL}
+    depends_on:
+      - backend
+    networks:
+      - frontend-net
+
+  backend:
+    image: akashpatial85/backend:latest
+    ports: 
+    - 5000:5000
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - backend-net
+      - frontend-net
+    
+  worker:
+    image: akashpatial85/worker:latest
+    depends_on:
+        - redis
+        - postgres
+    networks:
+      - backend-net
+
+  redis:
+    image: redis
+    networks:
+      - backend-net
+
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRESS_PASSWORD= password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-net
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend-net:
+  backend-net:
+   

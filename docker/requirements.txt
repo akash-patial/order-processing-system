@@ -1,0 +1,59 @@
+# Tools Required
+
+## Infrastructure
+- Terraform (provision EC2 / EKS)
+
+## CI/CD
+- Jenkins (build, test, push images)
+
+## Containerization
+- Docker
+
+## Orchestration
+- Kubernetes (EKS / Minikube)
+
+## Monitoring
+- Prometheus (scrape /metrics)
+- Grafana (dashboards)
+
+## Data Layer
+- PostgreSQL
+- Redis
+
+---
+
+# How Everything Connects
+
+## Terraform
+- Provisions Kubernetes cluster (EKS)
+- Creates networking, nodes
+
+## Docker
+- Builds images for:
+  - frontend
+  - backend
+  - worker
+
+## Kubernetes
+- Deploys:
+  - backend (stateless)
+  - frontend
+  - worker (scalable pods)
+  - Redis
+  - PostgreSQL
+
+## Jenkins
+- Pipeline:
+  - Build Docker images
+  - Push to registry
+  - Trigger deployment
+
+## Prometheus
+- Scrapes:
+  - backend: /metrics
+
+## Grafana
+- Dashboards:
+  - request rate
+  - order throughput
+  - system health

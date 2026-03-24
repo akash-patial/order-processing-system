@@ -1,0 +1,5 @@
+flask==2.3.2
+redis
+psycopg2-binary
+prometheus-client
+gunicorn
