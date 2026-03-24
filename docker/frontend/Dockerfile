@@ -10,12 +10,11 @@ RUN npm run build
 # Stage 2: Nginx
 FROM nginx:alpine
 
-ARG ENV=production
 
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy the right config based on environment
-COPY nginx.${ENV}.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
