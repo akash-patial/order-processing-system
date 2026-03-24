@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    environment {
+        IMAGE = "your-dockerhub-username/frontend:latest"
+        NAMESPACE = "frontend-ns"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-repo.git'
+            }
+        }
+
+        stage('Build & Push Image') {
+            steps {
+                sh 'docker build -t $IMAGE .'
+                sh 'docker push $IMAGE'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh """
+                kubectl set image deployment/frontend frontend=$IMAGE -n $NAMESPACE
+                kubectl rollout status deployment/frontend -n $NAMESPACE
+                """
+            }
+        }
+    }
+}

@@ -11,7 +11,7 @@ pipeline {
 
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-repo.git'
+                sh 'git clone https://github.com/akash-patial/order-processing-system.git'
             }
         }
 
@@ -53,9 +53,13 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
+                kubectl apply -f namespace.yml
+                kubectl apply -f redis.yml
+                kubectl apply -f postgres.yml
+                kubectl apply -f .
                 kubectl set image deployment/frontend frontend=$FRONTEND_IMAGE -n frontend-ns
                 kubectl set image deployment/backend backend=$BACKEND_IMAGE -n backend-ns
-
+                
                 kubectl rollout status deployment/frontend -n frontend-ns
                 kubectl rollout status deployment/backend -n backend-ns
                 '''
