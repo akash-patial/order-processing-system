@@ -16,7 +16,6 @@ spec:
       containers:
       - name: frontend
         image: akashpatial85/frontend:latest
-        imagePullPolicy: yes  # For local images
         ports:
         - containerPort: 80
         livenessProbe:
